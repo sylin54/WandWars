@@ -1,0 +1,8 @@
+name: Wandwars
+version: '${project.version}'
+main: com.ben.wandwars.Main
+api-version: 1.19
+commands:
+  wand:
+  wands:
+  discord:
