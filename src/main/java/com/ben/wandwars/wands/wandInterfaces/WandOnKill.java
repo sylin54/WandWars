@@ -7,3 +7,4 @@ import org.bukkit.entity.Player;
 public interface WandOnKill {
     void onKill(Player killer, Player slain, Main main);
 }
+
