@@ -2,7 +2,7 @@ package com.ben.wandwars.displaying;
 
 import com.ben.wandwars.effectsManagment.Effect;
 import com.ben.wandwars.effectsManagment.EffectsManager;
-import com.ben.wandwars.spells.components.blockHit.managers.DashStateManager;
+import com.ben.wandwars.stateManagers.DashStateManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

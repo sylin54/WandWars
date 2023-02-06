@@ -4,7 +4,7 @@ import com.ben.wandwars.displaying.Displayer;
 import com.ben.wandwars.displaying.TitleWarnings;
 import com.ben.wandwars.helpers.scheduling.CoolDownManager;
 import com.ben.wandwars.helpers.scheduling.CoolDownManagerCallback;
-import com.ben.wandwars.spells.components.blockHit.managers.DashStateManager;
+import com.ben.wandwars.stateManagers.DashStateManager;
 import com.ben.wandwars.wands.Wands;
 import org.bukkit.*;
 import org.bukkit.entity.Player;

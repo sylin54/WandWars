@@ -4,7 +4,7 @@ import com.ben.wandwars.commands.DiscordCommand;
 import com.ben.wandwars.commands.WandCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsInventoryListener;
-import com.ben.wandwars.spells.components.blockHit.managers.ManaManager;
+import com.ben.wandwars.stateManagers.ManaManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;

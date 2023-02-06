@@ -3,7 +3,7 @@ package com.ben.wandwars.wands.listeners;
 import com.ben.wandwars.Main;
 import com.ben.wandwars.displaying.TitleWarnings;
 import com.ben.wandwars.helpers.scheduling.CoolDownManager;
-import com.ben.wandwars.spells.components.blockHit.managers.ManaManager;
+import com.ben.wandwars.stateManagers.ManaManager;
 import com.ben.wandwars.wands.Wands;
 import com.ben.wandwars.wands.wandInterfaces.Wand;
 import org.bukkit.entity.Player;

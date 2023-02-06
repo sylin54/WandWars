@@ -1,4 +1,4 @@
-package com.ben.wandwars.spells.components.blockHit.managers;
+package com.ben.wandwars.stateManagers;
 
 import com.ben.wandwars.displaying.Displayer;
 import org.bukkit.entity.Player;

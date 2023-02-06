@@ -1,7 +1,6 @@
 package com.ben.wandwars.commands;
 
 import com.ben.wandwars.wands.Wands;
-import com.ben.wandwars.wands.items.ExplosionWand;
 import com.ben.wandwars.wands.wandInterfaces.Wand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
