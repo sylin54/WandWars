@@ -1,12 +1,12 @@
-package com.sylin.spellsystem.spell.templates;
+package com.ben.wandwars.spell.templates;
 
-import com.sylin.spellsystem.util.spell.SpellCaster;
-import com.sylin.spellsystem.spell.managers.SpellManager;
-import com.sylin.spellsystem.team.Team;
+import com.ben.wandwars.spell.managers.SpellManager;
+import com.ben.wandwars.util.spell.SpellCaster;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;

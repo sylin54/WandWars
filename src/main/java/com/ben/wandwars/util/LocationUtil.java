@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.util;
+package com.ben.wandwars.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,6 +1,6 @@
-package com.sylin.spellsystem.util.spell;
+package com.ben.wandwars.util.spell;
 
-import com.sylin.spellsystem.spell.managers.SpellManager;
+import com.ben.wandwars.spell.managers.SpellManager;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;

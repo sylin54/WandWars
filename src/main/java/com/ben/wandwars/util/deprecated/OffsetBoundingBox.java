@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.util.deprecated;
+package com.ben.wandwars.util.deprecated;
 
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;

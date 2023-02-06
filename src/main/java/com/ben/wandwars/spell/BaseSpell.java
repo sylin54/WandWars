@@ -1,7 +1,7 @@
-package com.sylin.spellsystem.spell;
+package com.ben.wandwars.spell;
 
-import com.sylin.spellsystem.spell.templates.ShieldSpellInfo;
-import com.sylin.spellsystem.spell.templates.Spell;
+import com.ben.wandwars.spell.templates.ShieldSpellInfo;
+import com.ben.wandwars.spell.templates.Spell;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;

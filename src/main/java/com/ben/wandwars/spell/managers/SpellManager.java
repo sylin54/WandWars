@@ -1,9 +1,9 @@
-package com.sylin.spellsystem.spell.managers;
+package com.ben.wandwars.spell.managers;
 
-import com.sylin.spellsystem.Main;
-import com.sylin.spellsystem.spell.templates.ShieldSpellInfo;
-import com.sylin.spellsystem.spell.templates.Spell;
-import com.sylin.spellsystem.util.HitUtil;
+import com.ben.wandwars.Main;
+import com.ben.wandwars.spell.templates.ShieldSpellInfo;
+import com.ben.wandwars.spell.templates.Spell;
+import com.ben.wandwars.util.HitUtil;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 

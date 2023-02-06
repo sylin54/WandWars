@@ -1,6 +1,6 @@
-package com.sylin.spellsystem.util;
+package com.ben.wandwars.util;
 
-import com.sylin.spellsystem.spell.managers.SpellManager;
+import com.ben.wandwars.spell.managers.SpellManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;

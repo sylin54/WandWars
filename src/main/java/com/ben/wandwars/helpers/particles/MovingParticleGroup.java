@@ -1,6 +1,5 @@
 package com.ben.wandwars.helpers.particles;
 
-import com.ben.wandwars.spells.components.ProjectileSpellComponent;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
@@ -17,7 +16,6 @@ creation:
 
 public class MovingParticleGroup {
 
-    public ProjectileSpellComponent projectileSpellComponent;
     Random random = new Random();
     Location lastLocation;
 

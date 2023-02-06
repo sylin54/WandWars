@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.spell.templates;
+package com.ben.wandwars.spell.templates;
 
 public interface ShieldSpellInfo {
     int getShieldPower();
