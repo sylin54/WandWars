@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.game.maps;
+package com.ben.wandwars.game.maps;
 
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
@@ -14,6 +14,7 @@ public class MapTemplateManager {
 
     }
 
+    //spawns a template in the specified location.
     public void loadTemplate(int mapTemplate, Location boxLoc) {
 
     }

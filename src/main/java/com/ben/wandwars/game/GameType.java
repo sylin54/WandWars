@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.game;
+package com.ben.wandwars.game;
 
 public enum GameType {
     SOLOS(2),

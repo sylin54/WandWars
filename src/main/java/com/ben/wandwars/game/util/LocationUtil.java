@@ -1,4 +1,4 @@
-package com.ben.wandwars.util;
+package com.ben.wandwars.game.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

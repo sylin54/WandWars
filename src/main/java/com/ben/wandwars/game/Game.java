@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.game;
+package com.ben.wandwars.game;
 
 public class Game {
     //find map

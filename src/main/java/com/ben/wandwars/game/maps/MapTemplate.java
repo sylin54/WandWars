@@ -1,6 +1,6 @@
-package com.sylin.spellsystem.game.maps;
+package com.ben.wandwars.game.maps;
 
-import com.sylin.spellsystem.util.LocationUtil;
+import com.ben.wandwars.game.util.LocationUtil;
 import org.bukkit.Location;
 
 

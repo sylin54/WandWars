@@ -1,4 +1,4 @@
-package com.sylin.spellsystem.game;
+package com.ben.wandwars.game;
 
 import org.bukkit.entity.Player;
 
