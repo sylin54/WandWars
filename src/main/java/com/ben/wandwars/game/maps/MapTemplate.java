@@ -1,7 +1,9 @@
 package com.ben.wandwars.game.maps;
 
 import com.ben.wandwars.game.util.LocationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 
 import java.util.List;
@@ -17,6 +19,10 @@ public class MapTemplate {
         this.blueSpawns = blueSpawns;
 
         cornerLocation = LocationUtil.convertToMapLoc(location);
+    }
+
+    public Block getBlock(int xOffset, int yOffset, int zOffset) {
+        return cornerLocation.add(xOffset, yOffset, zOffset).getBlock();
     }
 
     public List<Location> getRedSpawns() {
