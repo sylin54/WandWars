@@ -24,7 +24,7 @@ needed classes:
     wands
     finish the stats screen
     redo part of the moving particle list interface
-
+    find a bettter way to do: int getRandomID(GameType gameType)/MapTemplateManager and the equilivant in the map manager class
 
 
 

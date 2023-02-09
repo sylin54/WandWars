@@ -20,6 +20,8 @@ public class Map {
         return templateID;
     }
 
+    public MapTemplate getMapTemplate() {return MapTemplateManager.getInstance().getTemplate(templateID);}
+
     public Location getCornerLoc() {
         return cornerLocation;
     }

@@ -1,6 +1,7 @@
 package com.ben.wandwars.game.maps;
 
 import com.ben.wandwars.Main;
+import com.ben.wandwars.game.GameType;
 import com.ben.wandwars.game.util.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,10 +16,10 @@ import java.util.Random;
 
 //handles the creation of new maps from templates
 public class MapTemplateManager {
-
     public static final int mapHeight = 100;
 
-    Random random = new Random();
+    private MapManager mapManager = MapManager.getInstance();
+    private Random random = new Random();
     public List<MapTemplate> mapTemplates = new ArrayList<>();
 
     //spawns a template in the specified location.
@@ -72,11 +73,25 @@ public class MapTemplateManager {
             }
         }
          */
+
+        mapManager.addMap(mapTemplate, boxLoc);
     }
 
     //gets a random map ID from the pool of available map IDS
     public int getRandomID() {
         return random.nextInt(mapTemplates.size() + 1);
+    }
+
+    //prob need a better way to do this
+    public int getRandomID(GameType gameType) {
+
+
+        while (true) {
+            MapTemplate mapTemplate = mapTemplates.get(random.nextInt(mapTemplates.size()));
+            if(mapTemplate.getGameType().equals(gameType)) {
+                return mapTemplate.getId();
+            }
+        }
     }
 
     //adds a templated to the map list. No duplicate locations.
@@ -88,6 +103,10 @@ public class MapTemplateManager {
         }
 
         mapTemplates.add(mapTemplate);
+    }
+
+    public MapTemplate getTemplate(int id) {
+        return mapTemplates.get(id);
     }
 
     //singleton stuff
