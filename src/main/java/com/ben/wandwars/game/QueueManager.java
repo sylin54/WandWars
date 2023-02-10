@@ -1,9 +1,15 @@
 package com.ben.wandwars.game;
 
+import com.ben.wandwars.game.maps.MapManager;
+import com.ben.wandwars.game.util.GameTeam;
+import com.ben.wandwars.helpers.PlayerHelper;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class QueueManager {
@@ -11,7 +17,9 @@ public class QueueManager {
     //has to be ordered from least to greatest, so multiple arraylists.
     //
 
-    HashMap<GameType, ArrayList<UUID>> queueList;
+    private GameManager gameManager = GameManager.getInstance();
+    private MapManager mapManager = MapManager.getInstance();
+    private HashMap<GameType, ArrayList<UUID>> queueList;
 
     public QueueManager() {
         this.queueList = initQueueList();
@@ -19,18 +27,24 @@ public class QueueManager {
 
     public void addPlayer(Player player, GameType gameType) {
         queueList.get(gameType).add(player.getUniqueId());
+        checkQueue(gameType);
     }
 
     //checks if there are enough players in a queue, if so it clears them and starts the game.
-    private void checkQueue(GameType gameType) {
-        int players = queueList.get(gameType).size();
+    public void checkQueue(GameType gameType) {
+        int playersNum = queueList.get(gameType).size();
 
-        if(players < gameType.getPlayers()) {
+        if(playersNum < gameType.getPlayers()) {
             return;
         }
 
+        List<Player> players = PlayerHelper.convertListToPlayer(queueList.get(gameType));
+
+
         //this is a possible source of error.
         queueList.get(gameType).clear();
+
+        gameManager.createGame(players, gameType);
     }
 
     //initializes the queue list for the first time.

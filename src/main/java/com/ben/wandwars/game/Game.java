@@ -31,14 +31,13 @@ public class Game {
     private Map map;
     private Phase phase;
     private List<GameTeam> teams;
-    private int neededWins;
     private CountDownUtil countDownUtil;
 
-    public Game(List<GameTeam> teams, GameType gameType, Map map, int neededWins) {
+    public Game(List<GameTeam> teams, GameType gameType, Map map) {
         this.gameType = gameType;
         this.map = map;
         this.teams = teams;
-        this.neededWins = neededWins;
+
 
         mapManager.queueMap(map);
 
@@ -81,7 +80,7 @@ public class Game {
         GameTeam winnerTeam = GameTeam.getWinner(teams);
 
         winnerTeam.addWin();
-        if(winnerTeam.isWin(neededWins)) {
+        if(winnerTeam.isWin(gameType.getNeededWins())) {
 
             phase = Phase.ENDING;
 
@@ -98,6 +97,7 @@ public class Game {
                     }
                 }
             }.runTaskLater(Main.getInstance(), 5 * 20);
+            gameManager.endGame(this);
         }
     }
 
