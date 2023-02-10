@@ -18,10 +18,9 @@ public class QueueManager {
     //
 
     private GameManager gameManager = GameManager.getInstance();
-    private MapManager mapManager = MapManager.getInstance();
     private HashMap<GameType, ArrayList<UUID>> queueList;
 
-    public QueueManager() {
+    private QueueManager() {
         this.queueList = initQueueList();
     }
 
@@ -57,5 +56,11 @@ public class QueueManager {
         }
 
         return returnValue;
+    }
+
+    //singleton stuff
+    private static QueueManager instance = new QueueManager();
+    public static QueueManager getInstance() {
+        return instance;
     }
 }

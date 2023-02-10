@@ -18,10 +18,6 @@ public class WandCommand implements CommandExecutor {
             Wand wand = Wands.getWand(player.getInventory().getItemInMainHand());
 
             if(wand == null) return false;
-
-            if(wand instanceof ExplosionWand) {
-                player.sendMessage("explosion wand stats");
-            }
         }
 
         return false;

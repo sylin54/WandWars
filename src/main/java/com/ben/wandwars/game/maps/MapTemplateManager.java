@@ -3,6 +3,7 @@ package com.ben.wandwars.game.maps;
 import com.ben.wandwars.Main;
 import com.ben.wandwars.game.GameType;
 import com.ben.wandwars.game.util.LocationUtil;
+import com.sun.org.apache.bcel.internal.generic.LOOKUPSWITCH;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,7 +21,7 @@ public class MapTemplateManager {
 
     private MapManager mapManager = MapManager.getInstance();
     private Random random = new Random();
-    public List<MapTemplate> mapTemplates = new ArrayList<>();
+    private List<MapTemplate> mapTemplates = new ArrayList<>();
 
     //spawns a template in the specified location.
     public void loadTemplate(int mapTemplateID, Location boxLoc) {
@@ -95,14 +96,17 @@ public class MapTemplateManager {
     }
 
     //adds a templated to the map list. No duplicate locations.
-    public void addTemplate(MapTemplate mapTemplate) {
+    public void addTemplate(Location location, GameType gameType) {
+
+        location = LocationUtil.convertToMapLoc(location);
+
         for(MapTemplate testMapTemplate : mapTemplates) {
-            if(testMapTemplate.getCornerLocation().equals(mapTemplate.getCornerLocation())) {
+            if(testMapTemplate.getCornerLocation().equals(location)) {
                 mapTemplates.remove(testMapTemplate);
             }
         }
 
-        mapTemplates.add(mapTemplate);
+        mapTemplates.add(new MapTemplate(location, gameType, mapTemplates.size()));
     }
 
     public MapTemplate getTemplate(int id) {
