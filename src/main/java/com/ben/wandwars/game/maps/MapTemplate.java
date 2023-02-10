@@ -11,15 +11,14 @@ import java.util.List;
 
 public class MapTemplate {
 
-    private List<Location> redSpawns;
-    private List<Location> blueSpawns;
+
+    private List<List<Location>> spawns;
     private Location cornerLocation;
     private GameType gameType;
     private int id;
 
-    public MapTemplate(List<Location> redSpawns, List<Location> blueSpawns, Location location, GameType gameType, int id) {
-        this.redSpawns = redSpawns;
-        this.blueSpawns = blueSpawns;
+    public MapTemplate( Location location, GameType gameType, int id) {
+
         this.id = id;
         this.gameType = gameType;
 
@@ -30,14 +29,9 @@ public class MapTemplate {
         return cornerLocation.add(xOffset, yOffset, zOffset).getBlock();
     }
 
-    public List<Location> getRedSpawns() {
-        return redSpawns;
-    }
 
-    public List<Location> getBlueSpawns() {
-        return blueSpawns;
-    }
 
+    public List<List<Location>> getSpawns() {return spawns;}
     public Location getCornerLocation() {return cornerLocation;}
     public int getId() {return id;}
     public GameType getGameType() {return gameType;}

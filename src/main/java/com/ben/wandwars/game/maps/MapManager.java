@@ -73,6 +73,7 @@ public class MapManager {
             return false;
         }
 
+        map.clearSpawnPoints();
         activeMaps.add(map);
 
         return true;

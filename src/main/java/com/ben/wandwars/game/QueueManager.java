@@ -31,8 +31,6 @@ public class QueueManager {
 
         //this is a possible source of error.
         queueList.get(gameType).clear();
-
-
     }
 
     //initializes the queue list for the first time.
