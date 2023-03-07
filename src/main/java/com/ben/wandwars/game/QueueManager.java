@@ -3,6 +3,7 @@ package com.ben.wandwars.game;
 import com.ben.wandwars.game.maps.MapManager;
 import com.ben.wandwars.game.util.GameTeam;
 import com.ben.wandwars.helpers.PlayerHelper;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
@@ -33,7 +34,10 @@ public class QueueManager {
     public void checkQueue(GameType gameType) {
         int playersNum = queueList.get(gameType).size();
 
+        Bukkit.broadcastMessage("players num " + playersNum);
+
         if(playersNum < gameType.getPlayers()) {
+            Bukkit.broadcastMessage("players num wasn't enough");
             return;
         }
 

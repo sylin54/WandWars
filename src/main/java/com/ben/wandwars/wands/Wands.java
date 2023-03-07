@@ -11,9 +11,9 @@ import java.util.List;
 // is used to get what wand is in a players hand and such.
 // all methods are just about getting the wands or a spefific wnad
 public class Wands {
-    List<Wand> wands = new ArrayList<>();
+    static List<Wand> wands = new ArrayList<>();
 
-    List<Wand> WIPWands = new ArrayList<>();
+    static List<Wand> WIPWands = new ArrayList<>();
     private Wands() {
         //add the wands to the list
     }
@@ -26,7 +26,7 @@ public class Wands {
 
     public static List<Wand> getWIPWands() {
         Wands wands = new Wands();
-        return wands.getWIPWands();
+        return WIPWands;
     }
 
     //returns the wand gotten from the item

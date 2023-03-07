@@ -34,7 +34,6 @@ public class GameCaller implements Listener {
     private static GameCaller instance = new GameCaller();
     public static GameCaller getInstance() {return instance;}
     private GameCaller() {
-        Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
     }
 
 }

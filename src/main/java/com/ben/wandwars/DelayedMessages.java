@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 public class DelayedMessages{
-    Main main;
     long period;
 
     Random random = new Random();
@@ -40,7 +39,7 @@ public class DelayedMessages{
                     player.sendMessage(messages.get(rand));
                 }
             }
-        }.runTaskTimer(main, 0, period);
+        }.runTaskTimer(Main.getInstance(), 0, period);
 
     }
 }

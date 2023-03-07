@@ -2,6 +2,7 @@ package com.ben.wandwars.commands;
 
 import com.ben.wandwars.game.GameType;
 import com.ben.wandwars.game.QueueManager;
+import com.ben.wandwars.game.maps.MapManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +13,7 @@ public class QueueCommand implements CommandExecutor {
 
     QueueManager queueManager = QueueManager.getInstance();
 
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -20,13 +22,17 @@ public class QueueCommand implements CommandExecutor {
         }
 
         if (args.length < 1) {
+            System.out.println("no commands");
             return false;
         }
+
+
 
         Player player = (Player) sender;
         GameType gameType = GameType.getGameType(args[0]);
 
         if (gameType == null) {
+            System.out.println("gametype wasn't right");
             return false;
         }
 

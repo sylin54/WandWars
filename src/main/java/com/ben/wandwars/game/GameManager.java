@@ -3,6 +3,7 @@ package com.ben.wandwars.game;
 import com.ben.wandwars.game.maps.Map;
 import com.ben.wandwars.game.maps.MapManager;
 import com.ben.wandwars.game.util.GameTeam;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -17,9 +18,13 @@ public class GameManager {
     private MapManager mapManager = MapManager.getInstance();
 
     public boolean createGame(List<Player> players, GameType gameType) {
+
+        Bukkit.broadcastMessage("created game");
+
         Map map = mapManager.getRandomMap(gameType);
 
         if(map == null) {
+            Bukkit.broadcastMessage("no maps");
             return false;
         }
 
@@ -29,20 +34,25 @@ public class GameManager {
 
         for(int i = 0; i < gameType.getTeamLengths().length; i++) {
             List<UUID> teamPlayers = new ArrayList<>();
+            Bukkit.broadcastMessage("next team");
             for(int x = 0; x < i; x++) {
                 teamPlayers.add(players.get(0).getUniqueId());
+                Bukkit.broadcastMessage(players.get(0).getDisplayName() + " joining team " + i);
                 players.remove(0);
             }
 
             teams.add(new GameTeam(teamPlayers, getTeamName(0)));
 
         }
+
+        Bukkit.broadcastMessage("created game");
         createGame(new Game(teams, gameType, mapManager.getRandomMap(gameType)));
         return true;
     }
 
     public void createGame(Game game) {
         games.add(game);
+        game.startGame();
     }
 
     public boolean endGame(Game game) {

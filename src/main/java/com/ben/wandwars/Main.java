@@ -1,9 +1,12 @@
 package com.ben.wandwars;
 
 import com.ben.wandwars.commands.DiscordCommand;
+import com.ben.wandwars.commands.MapCommand;
+import com.ben.wandwars.commands.QueueCommand;
 import com.ben.wandwars.commands.WandCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsInventoryListener;
+import com.ben.wandwars.game.GameCaller;
 import com.ben.wandwars.stateManagers.ManaManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,12 +50,15 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(DeathMessageHandling.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(new MiscListener(), this);
         Bukkit.getPluginManager().registerEvents(new WandsInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(GameCaller.getInstance(), this);
 
         getCommand("wand").setExecutor(new WandCommand());
         getCommand("wands").setExecutor(new WandsCommand());
         getCommand("discord").setExecutor(new DiscordCommand());
+        getCommand("map").setExecutor(new MapCommand());
+        getCommand("queue").setExecutor(new QueueCommand());
 
-        DelayedMessages delayedMessages = new DelayedMessages(4 * 20);
+        DelayedMessages delayedMessages = new DelayedMessages(10 * 60 * 20);
         delayedMessages.start();
     }
 

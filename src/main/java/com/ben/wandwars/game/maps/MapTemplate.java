@@ -17,10 +17,11 @@ public class MapTemplate {
     private GameType gameType;
     private int id;
 
-    public MapTemplate( Location location, GameType gameType, int id) {
+    public MapTemplate(Location location, GameType gameType, int id, List<List<Location>> spawns) {
 
         this.id = id;
         this.gameType = gameType;
+        this.spawns = spawns;
 
         cornerLocation = LocationUtil.convertToMapLoc(location);
     }

@@ -34,6 +34,7 @@ public class Game {
     private CountDownUtil countDownUtil;
 
     public Game(List<GameTeam> teams, GameType gameType, Map map) {
+        Bukkit.broadcastMessage("created game");
         this.gameType = gameType;
         this.map = map;
         this.teams = teams;
@@ -59,11 +60,15 @@ public class Game {
     }
 
     public void startGame() {
+        Bukkit.broadcastMessage("started game");
         countDownUtil.start(GameTeam.getPlayers(teams));
         map.teleportToSpawnPoints();
     }
 
     private void nextPhase() {
+
+        Bukkit.broadcastMessage("switched phase, current phase is: " + phase);
+
         switch(phase) {
 
             case GAME:
@@ -79,10 +84,14 @@ public class Game {
     private void endRound() {
         GameTeam winnerTeam = GameTeam.getWinner(teams);
 
+        Bukkit.broadcastMessage("ending round");
+
         winnerTeam.addWin();
         if(winnerTeam.isWin(gameType.getNeededWins())) {
 
             phase = Phase.ENDING;
+
+            Bukkit.broadcastMessage("ending game");
 
             for(Player player : GameTeam.getPlayers(teams)) {
                 player.sendMessage(ChatColor.RED + "Game is over! " + winnerTeam.getName() + " is the winner!");
@@ -103,9 +112,12 @@ public class Game {
 
     private void startRound() {
         phase = Phase.GAME;
+        Bukkit.broadcastMessage("starting round");
     }
 
     public void handleDeath(Player player) {
+        Bukkit.broadcastMessage("player died");
+
         GameTeam.killPlayer(player, teams);
 
         if(GameTeam.hasWinner(teams)) {

@@ -18,19 +18,21 @@ public class LocationHelper {
     public static Location getOffsetLocation(double offsetX, double offsetY, double offsetZ, Location location) {
         Random random = new Random();
 
-        double x = random.nextDouble(offsetX * 2);
-        x -= offsetX;
-        x += location.getX();
+//        double x = random.nextDouble(offsetX * 2);
+//        x -= offsetX;
+//        x += location.getX();
+//
+//        double y = random.nextDouble(offsetY * 2);
+//        y -= offsetY;
+//        y += location.getY();
+//
+//        double z = random.nextDouble(offsetZ * 2);
+//        z -= offsetZ;
+//        z += location.getZ();
+//
+//        return new Location(location.getWorld(), x, y, z);
 
-        double y = random.nextDouble(offsetY * 2);
-        y -= offsetY;
-        y += location.getY();
-
-        double z = random.nextDouble(offsetZ * 2);
-        z -= offsetZ;
-        z += location.getZ();
-
-        return new Location(location.getWorld(), x, y, z);
+        return null;
     }
 
 

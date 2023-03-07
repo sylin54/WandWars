@@ -3,10 +3,15 @@ package com.ben.wandwars.commands;
 import com.ben.wandwars.game.GameType;
 import com.ben.wandwars.game.maps.MapManager;
 import com.ben.wandwars.game.maps.MapTemplateManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapCommand implements CommandExecutor {
 
@@ -20,10 +25,17 @@ public class MapCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        if(args[0] == "create") {
-            mapTemplateManager.addTemplate(player.getLocation(), GameType.getGameType(args[1]));
+        if(args[0].equals("create")) {
+
+            List<Location> locations = new ArrayList<>();
+            locations.add(new Location(Bukkit.getWorld("world"), 1, 100, 1));
+            locations.add(new Location(Bukkit.getWorld("world"), 1, 100, 1));
+
+            mapTemplateManager.addTemplate(player.getLocation(), GameType.getGameType(args[1]), locations);
+            System.out.println("created map");
         } else {
-            mapManager.addMap(mapTemplateManager.getTemplate(Integer.parseInt(args[1])), player.getLocation());
+
+            mapManager.addMap(MapTemplateManager.getInstance().getTemplate(0), new Location(Bukkit.getWorld("world"), 1000, 100, 100));
         }
 
         return true;

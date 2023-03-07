@@ -33,7 +33,7 @@ public enum GameType {
 
     public static GameType getGameType(String name) {
         for(GameType gameType : GameType.values()) {
-            if(gameType.getName() == name) {
+            if(gameType.getName().equalsIgnoreCase(name)) {
                 return gameType;
             }
         }
