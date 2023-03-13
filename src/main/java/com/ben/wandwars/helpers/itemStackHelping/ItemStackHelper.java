@@ -1,19 +1,16 @@
 package com.ben.wandwars.helpers.itemStackHelping;
 
 import com.ben.wandwars.Main;
-import com.ben.wandwars.wands.wandInterfaces.Wand;
+import com.ben.wandwars.wands.Wand;
 import com.ben.wandwars.wands.wandInterfaces.WandCraftable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeKind;
 import java.util.ArrayList;
 import java.util.List;
 

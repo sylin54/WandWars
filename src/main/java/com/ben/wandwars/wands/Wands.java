@@ -1,7 +1,6 @@
 package com.ben.wandwars.wands;
 
 
-import com.ben.wandwars.wands.wandInterfaces.Wand;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
