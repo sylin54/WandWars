@@ -56,16 +56,16 @@ public class MovingParticleGroup {
         particleMap.clear();
 
         for(MovingParticle movingParticle : particles) {
-            double offsetX = random.nextDouble(offset * 2);
-            offsetX -= offset;
-
-            double offsetY = random.nextDouble(offset * 2);
-            offsetY -= offset;
-
-            double offsetZ = random.nextDouble(offset * 2);
-            offsetZ -= offset;
-
-            particleMap.put(new Vector(offsetX, offsetY, offsetZ), movingParticle);
+//            double offsetX = random.nextDouble(offset * 2);
+//            offsetX -= offset;
+//
+//            double offsetY = random.nextDouble(offset * 2);
+//            offsetY -= offset;
+//
+//            double offsetZ = random.nextDouble(offset * 2);
+//            offsetZ -= offset;
+//
+//            particleMap.put(new Vector(offsetX, offsetY, offsetZ), movingParticle);
         }
     }
 

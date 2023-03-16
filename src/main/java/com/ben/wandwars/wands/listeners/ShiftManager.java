@@ -1,7 +1,9 @@
 package com.ben.wandwars.wands.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -14,7 +16,7 @@ import java.util.UUID;
 public class ShiftManager implements Listener {
     private List<UUID> shiftedPlayers = new ArrayList<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerShift(PlayerToggleSneakEvent event) {
         if(event.isSneaking()) {
             shiftedPlayers.add(event.getPlayer().getUniqueId());

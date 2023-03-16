@@ -53,6 +53,8 @@ public class HitUtil {
 
         for(Spell testSpell : spells) {
 
+            if(testSpell == spell) continue;
+
             double testRadius = testSpell.getLocation().distance(spell.getLocation());
 
             if(testRadius <= radius) {
@@ -69,6 +71,8 @@ public class HitUtil {
         double radius = spell.getRadius();
 
         for(Spell testSpell : spells) {
+
+            if(testSpell == spell) continue;
 
             double testRadius = testSpell.getLocation().distance(spell.getLocation());
 

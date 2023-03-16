@@ -2,7 +2,10 @@ package com.ben.wandwars.displaying;
 
 import com.ben.wandwars.effectsManagment.Effect;
 import com.ben.wandwars.effectsManagment.EffectsManager;
-import com.ben.wandwars.stateManagers.DashStateManager;
+import com.ben.wandwars.stateManagers.ManaManager;
+import com.ben.wandwars.wands.listeners.DashStateManager;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -73,5 +76,8 @@ public class Displayer {
         //ip
         Score ip = obj.getScore("helloper.minehut.gg");
         ip.setScore(scorePlace);
+
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§BMana: " + ManaManager.getInstance().getMana(player) + " §YDash: " + DashStateManager.getInstance().hasDash(player)));
     }
 }

@@ -1,8 +1,10 @@
 package com.ben.wandwars.wands.items;
 
 import com.ben.wandwars.helpers.itemStackHelping.ItemStackHelper;
+import com.ben.wandwars.util.spell.SpellCaster;
 import com.ben.wandwars.wands.AbilityInf;
 import com.ben.wandwars.wands.Wand;
+import com.ben.wandwars.wands.items.sniperWand.SniperWandPistolShot;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -61,35 +63,78 @@ ground: jumps up then does a small slam, high kb
 offhand:
 Dash: just an extra dash, medium mana, medium cooldown
 
-Moves:
-mellee wand
-
-parry shield
-moving forward shield
-
-mace swing
-
-
-
+Mellee wand, mostly focus on area denial, but can do some healing, especially ult can heal a lot.
 Light Wand
 Left click:
-Slash: low kb, low mana, medium damage, low cooldown
+Slash: low kb, low mana, medium damage, low cooldown, does high damage but high kb for mellee
 
 Right click:
-heal ray: no cooldown, very low health heal, low mana(but takes a ton of mana to heal a bit), medium range
+Bludgeon: after a short delay, do a more powerful slash(more kb, more damage)
 
 shift left click:
-Large shield: Summons a large, moving forward shield, that blocks most attacks. high mana, high cooldown
+Large shield: Summons a large, moving forward shield, that blocks most attacks. high mana, high cooldown, and pushes enemies away
 
 shift right click:
 parry: same as sniper wnad, low mana, medium cooldown
 
 offhand key:
-mace swing: same as current mace swing, high mana, high cooldown
+Javelin throw: After a short delay, throw a javelin that summons lightning on hit. Does high damage.
 
 drop key:
-team buff: gives a buff to the surrounding team in a circular area
+team buff: gives a buff to the surrounding team in a circular area, includes speed, resistance, and regen.
 
+Ult: Heal ray: shoot a continous heal ray that heals for a lot of health
+
+glave shot:
+
+Left click:
+Glave: needs one glave, basic mellee attack
+
+Right click:
+Glave shot: after a short delay, shoot a glaive, consumes 1 glaive.
+
+Shift Left click:
+
+
+Shift right click:
+Glaive block: shoots forward a wide blocking area, block power is based on glaives if 0 move doesn't happen, if 1 move blocks, if 2 move deflects
+
+Offhand:
+Teleports to the nearest glave, max range of 30.
+
+Drop:
+Moves the nearest glave back towards the player. Stops on walls
+
+Ult
+
+Null Mage
+Skills:
+Midrange attack
+punch
+single projectile removal
+Multi projectile removal
+teleport
+ground punch
+
+Left click:
+Void blast: Mid range attack that does decent damage
+
+Right click:
+Null Fist: Fist that after a delay does high kb and high damage
+
+Shift Left Click:
+Ground punch: After a short delay punches up on the block that was looked at when the spell was cast(range limit)
+
+Shift right click: Deletes a projectile the caster was looking at(Needs to be slightly weak)
+
+Offhand:
+Teleport
+
+Drop:
+Destroys all weak projectiles around the user
+
+Ult:
+Null Void: Creates a location where all the projectiles get deleted that weren't the caster's
 
  */
 
@@ -102,6 +147,11 @@ public class ExplosionWand extends Wand {
     @Override
     public void leftClickCast(Player caster) {
         caster.sendMessage("left click cast");
+        SniperWandPistolShot sniperWandPistolShot = new SniperWandPistolShot();
+
+        SpellCaster spellCaster = new SpellCaster(caster.getUniqueId());
+
+        sniperWandPistolShot.cast(caster.getEyeLocation(), caster.getLocation().getDirection(), spellCaster);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ben.wandwars.wands;
 
 
+import com.ben.wandwars.wands.items.ExplosionWand;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Wands {
     List<Wand> WIPWands = new ArrayList<>();
     private Wands() {
         //add the wands to the list
+        wands.add(new ExplosionWand());
     }
 
 
@@ -25,7 +27,7 @@ public class Wands {
 
     public static List<Wand> getWIPWands() {
         Wands wands = new Wands();
-        return wands.getWIPWands();
+        return wands.WIPWands;
     }
 
     //returns the wand gotten from the item
@@ -40,6 +42,13 @@ public class Wands {
         Wand returnValue = null;
 
         for(Wand loopingWand : wands.getWIPWands()) {
+            if(loopingWand.getItem().isSimilar(wand)) {
+                returnValue = loopingWand;
+                break;
+            }
+        }
+
+        for(Wand loopingWand : wands.getWands()) {
             if(loopingWand.getItem().isSimilar(wand)) {
                 returnValue = loopingWand;
                 break;

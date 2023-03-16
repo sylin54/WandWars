@@ -53,9 +53,6 @@ public abstract class Spell {
 
     //implementation ont the tick function. Is mainly for intervals
     public void tick() {
-
-        hits++;
-
         if (hits > getRange()) {
             onOutOfRange();
             remove();
@@ -64,7 +61,6 @@ public abstract class Spell {
 
         if(tickInterval() == 0) {
             onTick();
-            tick();
             return;
         }
 
@@ -72,6 +68,7 @@ public abstract class Spell {
             onTick();
         }
 
+        hits++;
     }
 
     public List<Player> getPlayerCasters() {
@@ -85,6 +82,12 @@ public abstract class Spell {
          }
 
         return returnValue;
+    }
+
+    public List<SpellCaster> getCastersID() {return casters;}
+
+    protected Vector updateDirection(Location newLocation) {
+        return location.toVector().subtract(newLocation.toVector());
     }
 
     public void remove() {

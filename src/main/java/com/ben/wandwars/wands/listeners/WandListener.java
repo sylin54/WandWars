@@ -1,14 +1,13 @@
 package com.ben.wandwars.wands.listeners;
 
-import com.ben.wandwars.Main;
 import com.ben.wandwars.wands.Wands;
 import com.ben.wandwars.displaying.Displayer;
 import com.ben.wandwars.displaying.TitleWarnings;
 import com.ben.wandwars.helpers.scheduling.CoolDownManager;
 import com.ben.wandwars.helpers.scheduling.CoolDownManagerCallback;
-import com.ben.wandwars.stateManagers.DashStateManager;
 import com.ben.wandwars.stateManagers.ManaManager;
 import com.ben.wandwars.wands.Wand;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,8 +16,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-
-import java.util.UUID;
 
 public class WandListener implements Listener {
 
@@ -31,13 +28,12 @@ public class WandListener implements Listener {
 
     CoolDownManager dashCoolDown;
 
-    DashStateManager dashStateManager;
-    public WandListener(Main main) {
+    public WandListener() {
 
         dashCoolDown = new CoolDownManager(2250, new CoolDownManagerCallback() {
             @Override
             public void run(Player target) {
-                dashStateManager.setDash(target, true);
+                DashStateManager.getInstance().setDash(target, true);
                 Displayer.update(target);
             }
         });
@@ -122,11 +118,9 @@ public class WandListener implements Listener {
             if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
 
                 if(!wand.getShiftLeftClickCastInf(player).isCastable()) return;
-
-                shiftManager.removeShift(player.getUniqueId());
-
                 //make sure there is sufficent mana
                 if(manaManager.offsetMana(player , -wand.getShiftLeftClickCastInf(player).getManaUsage())) {
+                    shiftManager.removeShift(player.getUniqueId());
                     wand.shiftLeftClickCast(player);
                 } else{
                     TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getShiftLeftClickCastInf(player).getManaUsage());
@@ -138,10 +132,9 @@ public class WandListener implements Listener {
 
                 if(!wand.getShiftRightClickCastInf(player).isCastable()) return;
 
-                shiftManager.removeShift(player.getUniqueId());
-
                 //make sure the player has sufficient mana
                 if(manaManager.offsetMana(player, -wand.getShiftRightClickCastInf(player).getManaUsage())) {
+                    shiftManager.removeShift(player.getUniqueId());
                     wand.shiftRightClickCast(player);
                 } else {
                     TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getShiftRightClickCastInf(player).getManaUsage());
@@ -155,7 +148,7 @@ public class WandListener implements Listener {
 
     @EventHandler
     private void onShift(PlayerToggleSneakEvent event) {
-        if(!event.isSneaking()) return;
+        if(event.isSneaking()) return;
 
         Player player = event.getPlayer();
 
@@ -165,6 +158,9 @@ public class WandListener implements Listener {
             return;
         }
 
+        if(!ShiftManager.getInstance().canDash(event.getPlayer().getUniqueId())) {
+            return;
+        }
 
         //if the cooldown is free cast the dash
         if(dashCoolDown.isFree(player)) {
@@ -173,7 +169,7 @@ public class WandListener implements Listener {
             DashUtil.spawnParticles(15, player.getLocation());
             DashUtil.dash(player);
 
-            dashStateManager.setDash(player, false);
+            DashStateManager.getInstance().setDash(player, false);
 
         } else {
             TitleWarnings.sendDashWarning(player, dashCoolDown.getCoolDownDuration(player));

@@ -4,16 +4,18 @@ import com.ben.wandwars.Main;
 import com.ben.wandwars.spell.templates.ShieldSpellInfo;
 import com.ben.wandwars.spell.templates.Spell;
 import com.ben.wandwars.util.HitUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class SpellManager {
     //handles the sotring and ticks of all the spells
 
-    private List<Spell> spells;
+    private List<Spell> spells = new ArrayList<>();
     public void addSpell(Spell spell) {
         spells.add(spell);
     }
@@ -27,6 +29,9 @@ public class SpellManager {
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                if(spells == null) Bukkit.broadcastMessage("NULL");
+
                 for(Spell spell : spells) {
 
                     //stores the last loction to incase spells use explosions in side their effets, this will prevent the explosions from being suffocated
@@ -39,9 +44,9 @@ public class SpellManager {
                         spell.onBlockHit(HitUtil.getIntersectingBlock(spell), lastLocation);
                     }
 
-                    if(HitUtil.intersectsEntity(spell)) {
-                        spell.onEntityHit(HitUtil.getEntities(spell).get(0));
-                    }
+//                    if(HitUtil.intersectsEntity(spell)) {
+//                        spell.onEntityHit(HitUtil.getEntities(spell).get(0));
+//                    }
 
                     if(HitUtil.intersectsWithSpell(spell)) {
 
