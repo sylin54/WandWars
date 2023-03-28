@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class EffectBundler {
+public class OldEffectBundler {
     private int duration;
-    final private EffectType effectType;
+    final private OldEffectType effectType;
 
     final private UUID uuid;
 
@@ -20,7 +20,7 @@ public class EffectBundler {
 
     private boolean isRemoved = false;
 
-    public EffectBundler(EffectType effectType, int duration, LivingEntity livingEntity, CoolDownManagerCallback onTick, CoolDownManagerCallback onExpire) {
+    public OldEffectBundler(OldEffectType effectType, int duration, LivingEntity livingEntity, CoolDownManagerCallback onTick, CoolDownManagerCallback onExpire) {
         this.duration = duration;
 
         this.effectType = effectType;
@@ -62,7 +62,7 @@ public class EffectBundler {
         onSecondDecrease.run(player);
     }
 
-    public Effect getEffect() {
-        return new Effect(duration, effectType);
+    public OldEffect getEffect() {
+        return new OldEffect(duration, effectType);
     }
 }

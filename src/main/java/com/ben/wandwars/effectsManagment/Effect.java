@@ -1,21 +1,34 @@
 package com.ben.wandwars.effectsManagment;
 
+import org.bukkit.potion.PotionEffect;
 
-public class Effect {
-    private int duration;
-    private EffectType effectType;
+import java.util.List;
+import java.util.UUID;
 
-    public Effect(int duration, EffectType effectType) {
-        this.duration = duration;
-        this.effectType = effectType;
+public abstract class Effect {
+    private long timeTicks;
+    private UUID playerID;
+
+    public Effect(UUID playerID) {
+        this.timeTicks = getMaxTime();
+        this.playerID = playerID;
     }
 
-
-    public int getDuration() {
-        return duration;
+    protected void suicide() {
+        EffectsManager.getInstance().removeEffect(playerID, getID());
     }
 
-    public EffectType getType() {
-        return effectType;
+    public long getTimeSeconds(){
+        return timeTicks /60;
     }
+    public long getTimeTicks() {
+        return timeTicks;
+    }
+    public void offsetTimeTicks(int offset){
+        timeTicks += offset;
+    }
+    public abstract List<PotionEffectNoDur> getPotionEffects();
+    public abstract int getID();
+    public abstract long getMaxTime();
+    public abstract String getName();
 }

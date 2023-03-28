@@ -1,7 +1,7 @@
 package com.ben.wandwars.displaying;
 
-import com.ben.wandwars.effectsManagment.Effect;
-import com.ben.wandwars.effectsManagment.EffectsManager;
+import com.ben.wandwars.effectsManagment.OldEffect;
+import com.ben.wandwars.effectsManagment.OldEffectsManager;
 import com.ben.wandwars.stateManagers.DashStateManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,7 +59,7 @@ public class Displayer {
         scorePlace--;
 
         //effects (may be none)
-        for(Effect effect : EffectsManager.getInstance().getEffects(player)) {
+        for(OldEffect effect : OldEffectsManager.getInstance().getEffects(player)) {
             Score effectDisplay = obj.getScore(effect.getType().getName());
             effectDisplay.setScore(scorePlace);
             scorePlace--;
