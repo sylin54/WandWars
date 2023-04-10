@@ -1,20 +1,23 @@
 package com.ben.wandwars.wands.listeners;
 
-import com.ben.wandwars.Main;
+import com.ben.wandwars.wands.Wands;
+import com.ben.wandwars.displaying.Displayer;
 import com.ben.wandwars.displaying.TitleWarnings;
 import com.ben.wandwars.helpers.scheduling.CoolDownManager;
+import com.ben.wandwars.helpers.scheduling.CoolDownManagerCallback;
 import com.ben.wandwars.stateManagers.ManaManager;
-import com.ben.wandwars.wands.Wands;
-import com.ben.wandwars.wands.wandInterfaces.Wand;
+import com.ben.wandwars.wands.Wand;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public class WandListener implements Listener {
-    Main main;
 
     //the cooldown of the wand ability
     CoolDownManager wandAbilityCooldown = new CoolDownManager(500);
@@ -22,15 +25,24 @@ public class WandListener implements Listener {
     //the small cooldown between the wand right clikcs and the wands mana manager
     CoolDownManager rightClickWandCooldown = new CoolDownManager(500);
     CoolDownManager leftClickWandCooldown = new CoolDownManager(250);
-    ManaManager manaManager;
-    public WandListener(Main main) {
-        this.main = main;
-        this.manaManager = ManaManager.getInstance();
+
+    CoolDownManager dashCoolDown;
+
+    public WandListener() {
+
+        dashCoolDown = new CoolDownManager(2250, new CoolDownManagerCallback() {
+            @Override
+            public void run(Player target) {
+                DashStateManager.getInstance().setDash(target, true);
+                Displayer.update(target);
+            }
+        });
     }
 
     @EventHandler
     private void onPlayerOffHand(PlayerSwapHandItemsEvent event) {
         Wand wand = Wands.getWand(event.getOffHandItem());
+        ManaManager manaManager = ManaManager.getInstance();
 
         if(wand == null) return;
 
@@ -40,13 +52,14 @@ public class WandListener implements Listener {
         Player player = event.getPlayer();
 
         //if the cooldown is free cast
-        if(manaManager.offsetMana(player, -wand.getAbilityMana())) {
+        if(!wand.getOffHandCastInf(player).isCastable()) return;
+        if(manaManager.offsetMana(player, -wand.getOffHandCastInf(player).getManaUsage())) {
             if(wandAbilityCooldown.isFree(player)){
-                wand.abilityCast(player, main);
+                wand.offHandCast(player);
                 wandAbilityCooldown.resetCoolDown(player);
             }
         }else {
-            TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getAbilityMana());
+            TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getOffHandCastInf(player).getManaUsage());
         }
     }
 
@@ -54,6 +67,8 @@ public class WandListener implements Listener {
     //handles the logic for detecting wands
     @EventHandler
     private void OnPlayerClick(PlayerInteractEvent event) {
+
+        ManaManager manaManager = ManaManager.getInstance();
 
         //making sure the interacted item is a wand
         if(event.getAction() == Action.PHYSICAL) {return;}
@@ -66,29 +81,98 @@ public class WandListener implements Listener {
         //variable initialization
         Player player = event.getPlayer();
 
-        //this is the code block with the false positive
-        if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            //make sure the player doesn't have a cooldown
-            if(!leftClickWandCooldown.isFree(player)) return;
-            leftClickWandCooldown.resetCoolDown(player);
-            //make sure there is sufficent mana
-            if(manaManager.offsetMana(player , -wand.getLeftManaUsage())) {
-                wand.leftClickCast(player, main);
-            } else{
-                TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getLeftManaUsage());
+        if(!player.isSneaking()) {
+            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+                if(!wand.getLeftClickCastInf(player).isCastable()) return;
+
+                //make sure the player doesn't have a cooldown
+                if(!leftClickWandCooldown.isFree(player)) return;
+                leftClickWandCooldown.resetCoolDown(player);
+                //make sure there is sufficent mana
+                if(manaManager.offsetMana(player , -wand.getLeftClickCastInf(player).getManaUsage())) {
+                    wand.leftClickCast(player);
+                } else{
+                    TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getLeftClickCastInf(player).getManaUsage());
+                }
             }
 
+            if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                //make sure the player doesn't have a cooldown
+
+                if(!wand.getRightClickCastInf(player).isCastable()) return;
+
+                if(!rightClickWandCooldown.isFree(player)) return;
+                rightClickWandCooldown.resetCoolDown(player);
+                //make sure the player has sufficient mana
+                if(manaManager.offsetMana(player, -wand.getRightClickCastInf(player).getManaUsage())) {
+                    wand.rightClickCast(player);
+                } else {
+                    TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getRightClickCastInf(player).getManaUsage());
+                }
+            }
+        } else {
+
+            ShiftManager shiftManager = ShiftManager.getInstance();
+
+            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+                if(!wand.getShiftLeftClickCastInf(player).isCastable()) return;
+                //make sure there is sufficent mana
+                if(manaManager.offsetMana(player , -wand.getShiftLeftClickCastInf(player).getManaUsage())) {
+                    shiftManager.removeShift(player.getUniqueId());
+                    wand.shiftLeftClickCast(player);
+                } else{
+                    TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getShiftLeftClickCastInf(player).getManaUsage());
+                }
+            }
+
+            if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                //make sure the player doesn't have a cooldown
+
+                if(!wand.getShiftRightClickCastInf(player).isCastable()) return;
+
+                //make sure the player has sufficient mana
+                if(manaManager.offsetMana(player, -wand.getShiftRightClickCastInf(player).getManaUsage())) {
+                    shiftManager.removeShift(player.getUniqueId());
+                    wand.shiftRightClickCast(player);
+                } else {
+                    TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getShiftRightClickCastInf(player).getManaUsage());
+                }
+            }
         }
 
-        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //make sure the player doesn't have a cooldown
-            if(!rightClickWandCooldown.isFree(player)) return;
-            //make sure the player has sufficient mana
-            if(manaManager.offsetMana(player, -wand.getRightClickManaUsage())) {
-                wand.rightClickCast(player, main);
-            } else {
-                TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getRightClickManaUsage());
-            }
+
+        //this is the code block with the false positive
+    }
+
+    @EventHandler
+    private void onShift(PlayerToggleSneakEvent event) {
+        if(event.isSneaking()) return;
+
+        Player player = event.getPlayer();
+
+        //if the player doesn't have a in their hand return wand return
+        if(Wands.getWand(player.getInventory().getItemInMainHand()) == null) {
+            player.sendMessage(ChatColor.RED + "You must have a wand equip to dash!");
+            return;
+        }
+
+        if(!ShiftManager.getInstance().canDash(event.getPlayer().getUniqueId())) {
+            return;
+        }
+
+        //if the cooldown is free cast the dash
+        if(dashCoolDown.isFree(player)) {
+            dashCoolDown.resetCoolDown(player);
+
+            DashUtil.spawnParticles(15, player.getLocation());
+            DashUtil.dash(player);
+
+            DashStateManager.getInstance().setDash(player, false);
+
+        } else {
+            TitleWarnings.sendDashWarning(player, dashCoolDown.getCoolDownDuration(player));
         }
     }
 

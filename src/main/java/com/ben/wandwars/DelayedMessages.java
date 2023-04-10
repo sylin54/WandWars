@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 public class DelayedMessages{
-    Main main;
     long period;
 
     Random random = new Random();
@@ -18,14 +17,11 @@ public class DelayedMessages{
 
 
     public DelayedMessages(long periodTick) {
-        Main main = Main.getInstance();
         this.period = periodTick;
 
-        messages.add(ChatColor.BLUE + "Be sure to join our discord with /discord!");
-        messages.add(ChatColor.RED + "If you find a bug be sure to report in the discord server!");
-        messages.add(ChatColor.GREEN + "Did you know: Pressing the offhand key gives a whole new ability!");
-        messages.add(ChatColor.GREEN+ "Be sure to post suggestions on the discord server!");
-        messages.add(ChatColor.BLUE + "It is my unbiased opinion that this server is really cool!");
+        messages.add(ChatColor.BLUE + "Be sure to join our discord with /discord");
+        messages.add(ChatColor.RED + "If you find a bug be sure to report in the discord server");
+        messages.add(ChatColor.GREEN+ "Be sure to post suggestions on the discord server");
     }
 
     public void start() {
@@ -40,7 +36,7 @@ public class DelayedMessages{
                     player.sendMessage(messages.get(rand));
                 }
             }
-        }.runTaskTimer(main, 0, period);
+        }.runTaskTimer(Main.getInstance(), 0, period);
 
     }
 }

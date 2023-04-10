@@ -46,37 +46,4 @@ public class HitUtil {
         return returnValue;
     }
 
-    public static boolean intersectsWithSpell(Spell spell) {
-        List<Spell> spells = spellManager.getSpells();
-
-        double radius = spell.getRadius();
-
-        for(Spell testSpell : spells) {
-
-            double testRadius = testSpell.getLocation().distance(spell.getLocation());
-
-            if(testRadius <= radius) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static List<Spell> getIntersectingSpells(Spell spell) {
-        List<Spell> spells = spellManager.getSpells();
-        List<Spell> returnValue = new ArrayList<>();
-
-        double radius = spell.getRadius();
-
-        for(Spell testSpell : spells) {
-
-            double testRadius = testSpell.getLocation().distance(spell.getLocation());
-
-            if(testRadius <= radius) {
-                returnValue.add(testSpell);
-            }
-        }
-        return returnValue;
-    }
-
 }

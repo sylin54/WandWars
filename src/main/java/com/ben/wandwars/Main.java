@@ -4,7 +4,11 @@ import com.ben.wandwars.commands.DiscordCommand;
 import com.ben.wandwars.commands.WandCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsCommand;
 import com.ben.wandwars.commands.wandsCommand.WandsInventoryListener;
+import com.ben.wandwars.spell.managers.SpellManager;
 import com.ben.wandwars.stateManagers.ManaManager;
+import com.ben.wandwars.stateManagers.PlayerBarsManager;
+import com.ben.wandwars.wands.listeners.ShiftManager;
+import com.ben.wandwars.wands.listeners.WandListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,11 +31,19 @@ needed classes:
 
 
 
+    todo:
+        shift dash detection
+        double jump detection
+        shift click ground detection
+        shift click air detection
+        shift right click ground detection
+        shift right click air detection
+        drop detection
+        left click detection
+        right click detection
 
 
-
-
-
+        FILE PATH: C:\Users\jobar\IdeaProjects\Wand Wars
  */
 public final class Main extends JavaPlugin {
 
@@ -47,13 +59,18 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(DeathMessageHandling.getInstance(), this);
         Bukkit.getPluginManager().registerEvents(new MiscListener(), this);
         Bukkit.getPluginManager().registerEvents(new WandsInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(ShiftManager.getInstance(), this);
+        Bukkit.getPluginManager().registerEvents(new WandListener(), this);
 
         getCommand("wand").setExecutor(new WandCommand());
         getCommand("wands").setExecutor(new WandsCommand());
         getCommand("discord").setExecutor(new DiscordCommand());
 
-        DelayedMessages delayedMessages = new DelayedMessages(4 * 20);
+        DelayedMessages delayedMessages = new DelayedMessages(60 * 5 * 20);
         delayedMessages.start();
+
+        SpellManager.getInstance().initialize();
+        PlayerBarsManager.initialize();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.ben.wandwars.commands.wandsCommand;
 
 import com.ben.wandwars.wands.Wands;
-import com.ben.wandwars.wands.wandInterfaces.Wand;
+import com.ben.wandwars.wands.Wand;
 import com.ben.wandwars.wands.wandInterfaces.WandState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -27,7 +27,7 @@ public abstract class Spell {
     private Team team;
 
     //the uuid of the caster. This will also include spell uuids.
-    private List<SpellCaster> casters;
+    private UUID caster;
 
     private UUID spellID;
 
@@ -42,29 +42,24 @@ public abstract class Spell {
         spellID = UUID.randomUUID();
     }
 
-    public void cast(Location location, Vector direction, SpellCaster... casters) {
+    public void cast(Location location, Vector direction, UUID caster) {
         spellManager.addSpell(this);
 
         this.location = location;
         this.spellDir = direction;
 
-        this.casters = Arrays.asList(casters);
+        this.caster = caster;
     }
 
     //implementation ont the tick function. Is mainly for intervals
     public void tick() {
-
-        hits++;
-
         if (hits > getRange()) {
             onOutOfRange();
-            remove();
             return;
         }
 
         if(tickInterval() == 0) {
             onTick();
-            tick();
             return;
         }
 
@@ -72,23 +67,14 @@ public abstract class Spell {
             onTick();
         }
 
+        hits++;
     }
 
-    public List<Player> getPlayerCasters() {
+    public UUID getCaster() {return caster;}
 
-        List<Player> returnValue = new ArrayList<>();
 
-        for(SpellCaster spellCaster : casters) {
-            if(spellCaster.getCasterType().isPlayer()) {
-                returnValue.add(spellCaster.getPlayer());
-            }
-         }
-
-        return returnValue;
-    }
-
-    public void remove() {
-        spellManager.removeSpell(this);
+    protected Vector updateDirection(Location newLocation) {
+        return location.toVector().subtract(newLocation.toVector());
     }
 
     public Location getLocation() {
