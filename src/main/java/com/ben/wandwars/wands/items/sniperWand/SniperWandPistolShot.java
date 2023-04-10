@@ -2,6 +2,7 @@ package com.ben.wandwars.wands.items.sniperWand;
 
 import com.ben.wandwars.spell.templates.ShieldSpellInfo;
 import com.ben.wandwars.spell.templates.Spell;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -17,8 +18,8 @@ public class SniperWandPistolShot extends Spell {
 
     private LivingEntity target = null;
 
-    float speed = 1.3f;
-    private float homingAmount = 01f;
+    private float speed = 1.7f;
+    private float homingAmount = 0.2f;
     @Override
     public boolean interrupts() {
         return false;
@@ -32,17 +33,19 @@ public class SniperWandPistolShot extends Spell {
     @Override
     public void onSpellHit(Spell spell) {
         location.getWorld().createExplosion(location, 1, false, false);
+        delete();
     }
 
     @Override
     public void onBlockHit(Block block, Location lastLocation) {
         location.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, location, 0, 0, 0,0);
-
+        delete();
     }
 
     @Override
     public void onEntityHit(LivingEntity entity) {
         entity.damage(3);
+        delete();
     }
 
     @Override
@@ -53,8 +56,10 @@ public class SniperWandPistolShot extends Spell {
     @Override
     protected void onTick() {
 
+
         if(getTicks() == 0) {
             getTarget();
+            System.out.println(target);
         }
 
         if(target != null) {
@@ -75,7 +80,7 @@ public class SniperWandPistolShot extends Spell {
             double lowestDistance = 100;
 
             for(Entity entity : location.getWorld().getNearbyEntities(location, 10, 10, 10)) {
-                if(entity instanceof LivingEntity && entity.getUniqueId().equals(getCastersID().contains(entity.getUniqueId())) && entity.getType()!= EntityType.ARMOR_STAND) {
+                if(entity instanceof LivingEntity && !entity.getUniqueId().equals(getCaster()) && entity.getType()!= EntityType.ARMOR_STAND) {
                     LivingEntity potentialVictim = (LivingEntity) entity;
 
                     //gets the distance and if the distance is lower than the lowest distance make the victim this entity
@@ -86,9 +91,14 @@ public class SniperWandPistolShot extends Spell {
                     }
                 }
             }
+
+            spellDir.normalize();
+            spellDir.multiply(speed);
+
+            location.add(spellDir);
         }
 
-        location.getWorld().spawnParticle(Particle.CRIT, 0, 0, 0, 0);
+        location.getWorld().spawnParticle(Particle.CRIT, location.getX(), location.getY(),  location.getZ(), 0, 0, 0, 0);
 
     }
 
@@ -99,7 +109,7 @@ public class SniperWandPistolShot extends Spell {
 
     @Override
     public int getRange() {
-        return 35;
+        return 18;
     }
 
     @Override
@@ -109,9 +119,7 @@ public class SniperWandPistolShot extends Spell {
 
     @Override
     public void onInterruptionHit(Spell interrupted) {
-        for(Player player : interrupted.getPlayerCasters()) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10, 1));
-        }
+        Bukkit.getPlayer(getCaster()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10, 1));
     }
 
     @Override
@@ -138,7 +146,8 @@ public class SniperWandPistolShot extends Spell {
                 if(entity instanceof LivingEntity) {
                     double distance = particleLocation.distance(((LivingEntity) entity).getEyeLocation());
 
-                    if(distance < lowestDistance) {
+                    if(distance < lowestDistance && entity.getUniqueId() != getCaster()) {
+
                         lowestDistance = distance;
                         target = (LivingEntity) entity;
                     }

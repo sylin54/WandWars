@@ -149,9 +149,7 @@ public class ExplosionWand extends Wand {
         caster.sendMessage("left click cast");
         SniperWandPistolShot sniperWandPistolShot = new SniperWandPistolShot();
 
-        SpellCaster spellCaster = new SpellCaster(caster.getUniqueId());
-
-        sniperWandPistolShot.cast(caster.getEyeLocation(), caster.getLocation().getDirection(), spellCaster);
+        sniperWandPistolShot.cast(caster.getEyeLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
     }
 
     @Override

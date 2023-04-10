@@ -9,13 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 public class SpellManager {
     //handles the sotring and ticks of all the spells
 
-    private List<Spell> spells = new ArrayList<>();
+    private List<Spell> spells = Collections.synchronizedList(new ArrayList<>());
     public void addSpell(Spell spell) {
         spells.add(spell);
     }
@@ -26,62 +27,96 @@ public class SpellManager {
 
     //handles the movement of the spells.
     public void initialize() {
+
+
         new BukkitRunnable() {
+
             @Override
             public void run() {
+                synchronized (spells) {
+                    for (int i = 0; i < spells.size(); i++) {
 
-                if(spells == null) Bukkit.broadcastMessage("NULL");
+                        Spell spell = spells.get(i);
 
-                for(Spell spell : spells) {
+                        //stores the last loction to incase spells use explosions in side their effets, this will prevent the explosions from being suffocated
+                        Location lastLocation = spell.getLocation();
 
-                    //stores the last loction to incase spells use explosions in side their effets, this will prevent the explosions from being suffocated
-                    Location lastLocation = spell.getLocation();
+                        spell.tick();
 
-                    spell.tick();
-
-                    //collisions only uses the first collided for now, can change later if enough people think it is jank
-                    if(HitUtil.intersectsWithBlock(spell)) {
-                        spell.onBlockHit(HitUtil.getIntersectingBlock(spell), lastLocation);
-                    }
+                        //collisions only uses the first collided for now, can change later if enough people think it is jank
+                        if (HitUtil.intersectsWithBlock(spell)) {
+                            spell.onBlockHit(HitUtil.getIntersectingBlock(spell), lastLocation);
+                        }
 
 //                    if(HitUtil.intersectsEntity(spell)) {
 //                        spell.onEntityHit(HitUtil.getEntities(spell).get(0));
 //                    }
 
-                    if(HitUtil.intersectsWithSpell(spell)) {
+                        if (intersectsWithSpell(spell)) {
 
-                        Spell hit = HitUtil.getIntersectingSpells(spell).get(0);
+                            Spell hit = getIntersectingSpells(spell).get(0);
 
-                        if(hit.isCharging()) {
-                            spell.onInterruptionHit(hit);
-                            hit.onInterruption(spell);
-                            break;
-                        }
+                            if (hit.isCharging()) {
+                                spell.onInterruptionHit(hit);
+                                hit.onInterruption(spell);
+                                break;
+                            }
 
-                        if(hit instanceof ShieldSpellInfo) {
-                            spell.onShieldHit((ShieldSpellInfo) hit);
-                        } else {
-                            spell.onSpellHit(HitUtil.getIntersectingSpells(spell).get(0));
+                            if (hit instanceof ShieldSpellInfo) {
+                                spell.onShieldHit((ShieldSpellInfo) hit);
+                            } else {
+                                spell.onSpellHit(getIntersectingSpells(spell).get(0));
+                            }
                         }
                     }
-
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 0, 1);
-    }
-
-    public List<Spell> getSpells() {
-        return spells;
+        }.runTaskTimer(Main.getInstance(), 1, 1);
     }
 
     public Spell getSpell(UUID spellID) {
-        for(Spell spell : spells) {
-            if(spell.getSpellID().equals(spellID)) {
-                return spell;
+        synchronized (spells) {
+            for (Spell spell : spells) {
+                if (spell.getSpellID().equals(spellID)) {
+                    return spell;
+                }
             }
+            return null;
         }
+    }
 
-        return null;
+    public  boolean intersectsWithSpell(Spell spell) {
+//        double radius = spell.getRadius();
+//
+//        for(Spell testSpell : spells) {
+//
+//            if(testSpell == spell) continue;
+//
+//            double testRadius = testSpell.getLocation().distance(spell.getLocation());
+//
+//            if(testRadius <= radius) {
+//                return true;
+//            }
+//        }
+        return false;
+    }
+
+    public List<Spell> getIntersectingSpells(Spell spell) {
+//        List<Spell> returnValue = new ArrayList<>();
+//
+//        double radius = spell.getRadius();
+//
+//        for(Spell testSpell : spells) {
+//
+//            if(testSpell == spell) continue;
+//
+//            double testRadius = testSpell.getLocation().distance(spell.getLocation());
+//
+//            if(testRadius <= radius) {
+//                returnValue.add(testSpell);
+//            }
+//        }
+        return new ArrayList<>();
     }
 
     private static SpellManager instance = new SpellManager();
