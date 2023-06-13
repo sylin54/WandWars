@@ -3,7 +3,7 @@ package com.ben.wandwars.displaying;
 import com.ben.wandwars.effectsManagment.Effect;
 import com.ben.wandwars.effectsManagment.EffectsManager;
 import com.ben.wandwars.stateManagers.ManaManager;
-import com.ben.wandwars.wands.listeners.DashStateManager;
+import com.ben.wandwars.wands.listeners.dash.DashStateManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;

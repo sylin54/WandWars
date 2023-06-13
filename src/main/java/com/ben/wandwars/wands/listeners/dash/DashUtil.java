@@ -1,4 +1,4 @@
-package com.ben.wandwars.wands.listeners;
+package com.ben.wandwars.wands.listeners.dash;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;

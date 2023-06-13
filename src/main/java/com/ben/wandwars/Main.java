@@ -17,9 +17,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
+
+math.pow might be inneficent if runnign into performance for pointUtil
+spell effects:
+They have to just be one off effects. It would be nice for improving efficeniey, but it would good to still realize that the spells need to be high quality
+
+ray hit effect:
+Gives hit player
+
+takes in particles
+
+
+
+
+
 todo:
     finish the cooldown manager callback system
     add the death message logic
+    make sniper wand add effects
 
 
 needed classes:
@@ -71,6 +86,10 @@ public final class Main extends JavaPlugin {
 
         SpellManager.getInstance().initialize();
         PlayerBarsManager.initialize();
+
+
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
     }
 
     @Override

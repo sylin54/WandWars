@@ -17,6 +17,7 @@ public class Wands {
     private Wands() {
         //add the wands to the list
         wands.add(new ExplosionWand());
+        WIPWands.add(new ExplosionWand());
     }
 
 

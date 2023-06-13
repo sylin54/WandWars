@@ -7,12 +7,16 @@ import com.ben.wandwars.helpers.scheduling.CoolDownManager;
 import com.ben.wandwars.helpers.scheduling.CoolDownManagerCallback;
 import com.ben.wandwars.stateManagers.ManaManager;
 import com.ben.wandwars.wands.Wand;
+import com.ben.wandwars.wands.listeners.dash.DashStateManager;
+import com.ben.wandwars.wands.listeners.dash.DashUtil;
+import com.ben.wandwars.wands.listeners.dash.PlayerDashEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -62,6 +66,48 @@ public class WandListener implements Listener {
             TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getOffHandCastInf(player).getManaUsage());
         }
     }
+
+    @EventHandler
+    private void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if(!(event.getDamager() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getDamager();
+
+        Wand wand = Wands.getWand(player.getInventory().getItemInMainHand());
+        if(wand == null) return;
+
+        event.setCancelled(true);
+
+        ManaManager manaManager = ManaManager.getInstance();
+
+        if(!player.isSneaking()) {
+            if(!wand.getLeftClickCastInf(player).isCastable()) return;
+
+            //make sure the player doesn't have a cooldown
+            if(!leftClickWandCooldown.isFree(player)) return;
+            leftClickWandCooldown.resetCoolDown(player);
+            //make sure there is sufficent mana
+            if(manaManager.offsetMana(player , -wand.getLeftClickCastInf(player).getManaUsage())) {
+                wand.leftClickCast(player);
+            } else{
+                TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getLeftClickCastInf(player).getManaUsage());
+            }
+        } else {
+            ShiftManager shiftManager = ShiftManager.getInstance();
+
+            if(!wand.getShiftLeftClickCastInf(player).isCastable()) return;
+            //make sure there is sufficent mana
+            if(manaManager.offsetMana(player , -wand.getShiftLeftClickCastInf(player).getManaUsage())) {
+                shiftManager.removeShift(player.getUniqueId());
+                wand.shiftLeftClickCast(player);
+            } else{
+                TitleWarnings.sendManaWarning(player, manaManager.getMana(player), wand.getShiftLeftClickCastInf(player).getManaUsage());
+            }
+        }
+    }
+
 
 
     //handles the logic for detecting wands
@@ -164,6 +210,15 @@ public class WandListener implements Listener {
 
         //if the cooldown is free cast the dash
         if(dashCoolDown.isFree(player)) {
+
+            //stuff to work with custom event
+            PlayerDashEvent playerDashEvent =  new PlayerDashEvent(player);
+            Bukkit.getPluginManager().callEvent(playerDashEvent);
+
+            if(playerDashEvent.isCancelled()) {
+                return;
+            }
+
             dashCoolDown.resetCoolDown(player);
 
             DashUtil.spawnParticles(15, player.getLocation());

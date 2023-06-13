@@ -22,6 +22,7 @@ public class SpellManager {
     }
 
     public void removeSpell(Spell spell) {
+        spell.setDeleted(true);
         spells.remove(spell);
     }
 

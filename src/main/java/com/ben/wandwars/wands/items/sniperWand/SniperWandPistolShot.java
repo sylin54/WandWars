@@ -103,6 +103,11 @@ public class SniperWandPistolShot extends Spell {
     }
 
     @Override
+    public void onCast() {
+
+    }
+
+    @Override
     public int tickInterval() {
         return 1;
     }

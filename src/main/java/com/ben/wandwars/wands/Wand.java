@@ -1,6 +1,5 @@
 package com.ben.wandwars.wands;
 
-import com.ben.wandwars.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,5 +29,5 @@ public abstract class Wand {
     public abstract AbilityInf getOffHandCastInf(Player caster);
     public abstract AbilityInf getShiftLeftClickCastInf(Player caster);
     public abstract AbilityInf getShiftRightClickCastInf(Player caster);
-    public abstract AbilityInf getDropKeyCast(Player caster);
+    public abstract AbilityInf getDropKeyCastInf(Player caster);
 }

@@ -1,12 +1,23 @@
-package com.ben.wandwars.spell;
+package com.ben.wandwars.wands.items.sniperWand;
 
 import com.ben.wandwars.spell.templates.ShieldSpellInfo;
 import com.ben.wandwars.spell.templates.Spell;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
-public class BaseSpell extends Spell {
+public class SniperWandJump extends Spell {
+
+    private double forwardSpeed;
+    private double upwardSpeed;
+
+    public SniperWandJump(double forwardSpeed, double upwardSpeed) {
+        this.forwardSpeed = forwardSpeed;
+        this.upwardSpeed = upwardSpeed;
+    }
 
     @Override
     public boolean interrupts() {
@@ -46,6 +57,18 @@ public class BaseSpell extends Spell {
     @Override
     public void onCast() {
 
+        Player player = Bukkit.getPlayer(getCaster());
+
+        Vector velocity = spellDir;
+
+        velocity.multiply(forwardSpeed);
+        velocity.setY(upwardSpeed);
+
+        player.setVelocity(velocity);
+
+        //do particles
+
+        delete();
     }
 
     @Override
@@ -60,6 +83,7 @@ public class BaseSpell extends Spell {
 
     @Override
     public void onInterruption(Spell interrupter) {
+
     }
 
     @Override

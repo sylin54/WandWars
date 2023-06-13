@@ -4,10 +4,21 @@ import com.ben.wandwars.helpers.itemStackHelping.ItemStackHelper;
 import com.ben.wandwars.util.spell.SpellCaster;
 import com.ben.wandwars.wands.AbilityInf;
 import com.ben.wandwars.wands.Wand;
+import com.ben.wandwars.wands.items.DarkWand.DarkWandBolt;
+import com.ben.wandwars.wands.items.DarkWand.DarkWandPull;
+import com.ben.wandwars.wands.items.DarkWand.DarkWandSlam;
+import com.ben.wandwars.wands.items.DarkWand.DarkWandSlash;
 import com.ben.wandwars.wands.items.sniperWand.SniperWandPistolShot;
+import com.ben.wandwars.wands.items.sniperWand.SniperWandUlt;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
+
+import java.util.Locale;
 
 /*
 (Idea of this is to be a snipe build with some mobility and team play. Pistols are also a good poke/dmg option which should hopefully make the build more fast paced)
@@ -36,6 +47,9 @@ smokebomb: high cooldown, very low range, high mana
 offhand:
 double jump: high jump, very high cooldown, can be stacked, medium mana
 
+ult:
+A bunch of sniper wand shots
+
 (Idea is a high damage, melee, disruptor build, can also pull enemies into worse positions)
 Dark Wand:
 left click:
@@ -61,7 +75,7 @@ jumps down into the ground, does more damage and kb the higher jumped from. Also
 ground: jumps up then does a small slam, high kb
 
 offhand:
-Dash: just an extra dash, medium mana, medium cooldown
+Dash strike: like quickstrike with extra wind up, medium mana, medium cooldown
 
 Mellee wand, mostly focus on area denial, but can do some healing, especially ult can heal a lot.
 Light Wand
@@ -117,13 +131,13 @@ teleport
 ground punch
 
 Left click:
-Void blast: Mid range attack that does decent damage
+Void blast: A charge attack that is a raycast after a short delay
 
 Right click:
-Null Fist: Fist that after a delay does high kb and high damage
+Area removal: starts are debuff area that spawns on the right clicked place after a short delay
 
 Shift Left Click:
-Ground punch: After a short delay punches up on the block that was looked at when the spell was cast(range limit)
+Boost: Buffs the teammate that the person is looking at for a short time
 
 Shift right click: Deletes a projectile the caster was looking at(Needs to be slightly weak)
 
@@ -154,26 +168,48 @@ public class ExplosionWand extends Wand {
 
     @Override
     public void rightClickCast(Player caster) {
-        caster.sendMessage("right click cast");
+        double perpDist = 0.5;
+        double partDist = 3;
+
+        Vector direction = caster.getLocation().getDirection();
+
+        Location particleLoc = caster.getLocation().add(direction.multiply(partDist));
+
+        Location particle1Loc = particleLoc.clone().add(new Vector(-direction.getX(), direction.getY(), direction.getZ()).normalize().multiply(perpDist));
+        Location particle2Loc = particleLoc.clone().add(new Vector(direction.getX(), direction.getY(), -direction.getZ()).normalize().multiply(perpDist));
+
+        World world = caster.getWorld();
+
+        world.spawnParticle(Particle.FLAME, particleLoc, 0, 0, 0, 0);
+        world.spawnParticle(Particle.FLAME, particle1Loc, 0, 0, 0, 0);
+        world.spawnParticle(Particle.FLAME, particle2Loc, 0, 0, 0, 0);
+
     }
 
     @Override
     public void offHandCast(Player caster) {
         caster.sendMessage("offhand cast");
+        DarkWandBolt darkWandBolt = new DarkWandBolt(20, 10, 1, 1);
+        darkWandBolt.cast(caster.getEyeLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
     }
 
     @Override
     public void shiftLeftClickCast(Player caster) {
         caster.sendMessage("Shift left click cast");
+        DarkWandPull darkWandPull = new DarkWandPull(20, 1);
+        darkWandPull.cast(caster.getEyeLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
     }
 
     @Override
     public void shiftRightClickCast(Player caster) {
-        caster.sendMessage("Shift right click cast");
+        DarkWandSlash darkWandSlash = new DarkWandSlash(5);
+        darkWandSlash.cast(caster.getLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
     }
 
     @Override
     public void dropKeyCast(Player caster) {
+        DarkWandSlam darkWandSlam = new DarkWandSlam();
+        darkWandSlam.cast(caster.getLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
         caster.sendMessage("drop key cast");
     }
 
@@ -203,7 +239,7 @@ public class ExplosionWand extends Wand {
     }
 
     @Override
-    public AbilityInf getDropKeyCast(Player caster) {
+    public AbilityInf getDropKeyCastInf(Player caster) {
         return new AbilityInf(10);
     }
 }

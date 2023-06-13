@@ -67,7 +67,7 @@ public class SniperWand extends Wand {
     }
 
     @Override
-    public AbilityInf getDropKeyCast(Player caster) {
+    public AbilityInf getDropKeyCastInf(Player caster) {
         return null;
     }
 }

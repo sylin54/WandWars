@@ -2,7 +2,9 @@ package com.ben.wandwars.spell.templates;
 
 import com.ben.wandwars.spell.managers.SpellManager;
 import com.ben.wandwars.util.spell.SpellCaster;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -38,17 +40,27 @@ public abstract class Spell {
     //if this is turned on the spell will be deleted when the caster is hit
     protected boolean isCharging = false;
 
+    private boolean isDeleted = false;
+
     public Spell() {
         spellID = UUID.randomUUID();
     }
 
     public void cast(Location location, Vector direction, UUID caster) {
-        spellManager.addSpell(this);
 
         this.location = location;
         this.spellDir = direction;
+        spellDir.normalize();
 
         this.caster = caster;
+
+        onCast();
+
+        spellManager.addSpell(this);
+    }
+
+    public void cast(Player caster) {
+        cast(caster.getLocation(), caster.getLocation().getDirection(), caster.getUniqueId());
     }
 
     //implementation ont the tick function. Is mainly for intervals
@@ -59,7 +71,13 @@ public abstract class Spell {
         }
 
         if(tickInterval() == 0) {
+
+            hits++;
+
             onTick();
+            if(isDeleted == false) {
+                tick();
+            }
             return;
         }
 
@@ -75,6 +93,14 @@ public abstract class Spell {
 
     protected Vector updateDirection(Location newLocation) {
         return location.toVector().subtract(newLocation.toVector());
+    }
+
+    public Player getPlayerCaster() {
+        return Bukkit.getPlayer(caster);
+    }
+
+    public void hitSpell(LivingEntity hitEntity) {
+        onEntityHit(hitEntity);
     }
 
     public Location getLocation() {
@@ -93,6 +119,14 @@ public abstract class Spell {
 
     public void delete(){
         spellManager.removeSpell(this);
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public boolean isCharging() {
@@ -114,6 +148,7 @@ public abstract class Spell {
     public abstract void onOutOfRange();
     //executes every time the tick interval gets past by the ticks
     protected abstract void onTick();
+    public abstract void onCast();
     //the dealy  between the tick command in ticks. If this is 0 the tick command will activate untill the spell is terminated
     public abstract int tickInterval();
     //the range of the spell

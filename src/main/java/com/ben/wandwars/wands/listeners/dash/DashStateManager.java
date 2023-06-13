@@ -1,7 +1,6 @@
-package com.ben.wandwars.wands.listeners;
+package com.ben.wandwars.wands.listeners.dash;
 
 import com.ben.wandwars.displaying.Displayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -30,6 +29,8 @@ public class DashStateManager {
         }
 
         Displayer.update(player);
+
+
     }
 
     public static DashStateManager getInstance() {

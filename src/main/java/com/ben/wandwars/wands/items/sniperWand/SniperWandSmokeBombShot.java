@@ -1,4 +1,4 @@
-package com.ben.wandwars.spell;
+package com.ben.wandwars.wands.items.sniperWand;
 
 import com.ben.wandwars.spell.templates.ShieldSpellInfo;
 import com.ben.wandwars.spell.templates.Spell;
@@ -6,8 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 
-public class BaseSpell extends Spell {
-
+public class SniperWandSmokeBombShot extends Spell {
     @Override
     public boolean interrupts() {
         return false;
@@ -60,6 +59,7 @@ public class BaseSpell extends Spell {
 
     @Override
     public void onInterruption(Spell interrupter) {
+
     }
 
     @Override
